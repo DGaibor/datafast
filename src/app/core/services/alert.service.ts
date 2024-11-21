@@ -1,6 +1,5 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Notyf } from 'notyf';
-import 'notyf/notyf.min.css';
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({

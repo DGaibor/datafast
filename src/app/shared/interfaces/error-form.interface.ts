@@ -1,1 +1,3 @@
-export type ErrorMessages = Record<string, string[]>;
+export type ErrorMessages = {
+  [key: string]: string[] | ErrorMessages;
+};

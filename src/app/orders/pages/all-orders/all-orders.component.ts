@@ -10,10 +10,7 @@ import { HeaderComponent } from '../../../shared/components/header/header.compon
 })
 export class AllOrdersComponent {
 
-  title: string = 'All Orders';
+  title = 'All Orders';
 
-  // constructor( ) {
-  // this.title = 'All Orders';
-  // }
 
 }

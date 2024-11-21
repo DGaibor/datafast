@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormErrorService } from '../../../core/services/form-error.service';
 import { ErrorMessages } from '../../../shared/interfaces/error-form.interface';
@@ -7,6 +7,7 @@ import { OrderService } from '../../../core/services/order.service';
 import { Order } from '../../../core/models/order.model';
 import { firstValueFrom } from 'rxjs';
 import { AlertService } from '../../../core/services/alert.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -19,7 +20,8 @@ import { AlertService } from '../../../core/services/alert.service';
   standalone: true,
   styleUrl: './form-order.component.scss'
 })
-export class FormOrderComponent {
+export class FormOrderComponent implements OnInit {
+  @Input() id?: string | null;
 
   errorMessages: ErrorMessages = {};
   form: FormGroup = new FormGroup({
@@ -33,7 +35,23 @@ export class FormOrderComponent {
   constructor(
     private formErrorService: FormErrorService,
     private orderService: OrderService,
-    private alertService: AlertService) {
+    private alertService: AlertService,
+    private router: Router) {
+  }
+  ngOnInit(): void {
+    this.loadOrderData();
+  }
+
+  async loadOrderData() {
+    if (this.id) {
+      try {
+        const order = await firstValueFrom(this.orderService.getOrderById(this.id));
+        this.form.patchValue(order);
+      } catch (error) {
+        console.log('Error loading order', error);
+        this.alertService.showError( 'Error loading order');
+      }
+    }
   }
 
   async submit() {
@@ -43,14 +61,29 @@ export class FormOrderComponent {
     }
     const order: Order = this.form.value
 
-    try {
-      await firstValueFrom(this.orderService.createOrder(order));
-      this.alertService.showSuccess( 'Order created successfully');
-
-    } catch (error) {
-      this.alertService.showError( 'An error occurred while creating the order. Please try again later');
+    if (this.id) {
+      try {
+        await firstValueFrom(this.orderService.updateOrder(this.id, order));
+        this.alertService.showSuccess( 'Order updated successfully');
+        this.redirectToOrders();
+      } catch (error) {
+        this.alertService.showError( 'An error occurred while updating the order. Please try again later');
+      }
+      return;
+    }else{
+      try {
+        await firstValueFrom(this.orderService.createOrder(order));
+        this.alertService.showSuccess( 'Order created successfully');
+        this.redirectToOrders();
+      } catch (error) {
+        this.alertService.showError( 'An error occurred while creating the order. Please try again later');
+      }
     }
 
+  }
+
+  redirectToOrders(){
+    this.router.navigate(['/']);
   }
 
 }

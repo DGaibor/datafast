@@ -24,8 +24,8 @@ export class FormOrderComponent {
   errorMessages: ErrorMessages = {};
   form: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.email, Validators.required]),
-    first_name: new FormControl('', [Validators.required]),
-    last_name: new FormControl('', [Validators.required]),
+    firstName: new FormControl('', [Validators.required]),
+    lastName: new FormControl('', [Validators.required]),
     quantity: new FormControl('', [Validators.required]),
     price: new FormControl('', [Validators.required]),
   });

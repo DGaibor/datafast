@@ -1,3 +1,1 @@
-export interface ErrorMessages {
-  [key: string]: string[] | ErrorMessages;
-}
+export type ErrorMessages = Record<string, string[]>;

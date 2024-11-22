@@ -68,6 +68,7 @@ export class FormOrderComponent implements OnInit {
         this.redirectToOrders();
       } catch (error) {
         this.alertService.showError( 'An error occurred while updating the order. Please try again later');
+        console.error(error)
       }
       return;
     }else{
@@ -77,6 +78,7 @@ export class FormOrderComponent implements OnInit {
         this.redirectToOrders();
       } catch (error) {
         this.alertService.showError( 'An error occurred while creating the order. Please try again later');
+        console.error(error)
       }
     }
 

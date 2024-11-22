@@ -1,3 +1,3 @@
-export type ErrorMessages = {
+export interface ErrorMessages {
   [key: string]: string[] | ErrorMessages;
-};
+}
